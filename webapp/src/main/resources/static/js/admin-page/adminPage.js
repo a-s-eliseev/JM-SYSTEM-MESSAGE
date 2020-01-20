@@ -7,12 +7,3 @@ const documentReady = new DocumentReady();
 window.addEventListener('load', handler.handller);
 
 $(document).ready(documentReady.documentReady());
-
-
-
-
-
-
-
-
-
