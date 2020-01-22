@@ -301,10 +301,21 @@ function Createapp(entity) {
         data: JSON.stringify(entity),
         contentType: "application/json",
         success: function(data){
-            sendChannel(data);
+            // sendChannel(data);
+            addAppIntoSidebarAppList(data);
         },
         error: function(err) {
             console.log(err);
         }
     });
 };
+
+function addAppIntoSidebarAppList(data) {
+    $('.p-channel_sidebar__add_app').append(`
+            <div class="p-app_sidebar__channel">
+                <button class="p-channel_sidebar__name_button" id="app_button_${data.id}" value="${data.id}">
+                    <i class="p-channel_sidebar__channel_icon_prefix">#</i>
+                    <span class="p-channel_sidebar__name-3" id="app_name_${data.id}">${data.name}</span>
+                </button>
+            </div>`);
+}

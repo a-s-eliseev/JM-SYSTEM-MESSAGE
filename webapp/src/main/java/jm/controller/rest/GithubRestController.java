@@ -58,7 +58,7 @@ public class GithubRestController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ApplicationDTO> createApp(Principal principal, @RequestBody ApplicationDTO applicationDTO, HttpServletRequest request) {
+    public ResponseEntity<Application> createApp(Principal principal, @RequestBody ApplicationDTO applicationDTO, HttpServletRequest request) {
         Application application = applicationDTOService.toEntity(applicationDTO);
         if (principal != null) {
             User owner = userService.getUserByLogin(principal.getName());
@@ -75,7 +75,7 @@ public class GithubRestController {
             ResponseEntity.badRequest().build();
         }
 
-        return new ResponseEntity<>(applicationDTO, HttpStatus.OK);
+        return new ResponseEntity<>(application, HttpStatus.OK);
     }
 
 }
