@@ -243,3 +243,68 @@ export const populateDirectMessages = async () => {
         }
     });
 };
+
+$("#addGitHub").click(
+    function () {
+        var jsonVar = {
+
+            login: $("#git-login").val(),
+            password: $("#git-password").val()
+        };
+        $.ajax({
+            type:"POST",
+            url:"http://localhost:8080/api/github/token",
+            data: JSON.stringify(jsonVar),
+            contentType: "application/json",
+            success: function(){
+                $("#git-login").val("");
+                $("#git-password").val("");
+                AddGithubApp();
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+
+
+    }
+);
+
+
+    function AddGithubApp() {
+        const date = new Date();
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        const trueDate = date.toLocaleString("ru", options);
+        const dateWithoutCommas = trueDate.replace(/,/g, "");
+
+        const githubname = "GitHub";
+
+        const entity = {
+            name: githubname,
+            isPrivate: true,
+            createdDate: dateWithoutCommas,
+            ownerId: loggedUserId
+        };
+        Createapp(entity);
+    };
+
+function Createapp(entity) {
+    $.ajax({
+        type:"POST",
+        url:"http://localhost:8080/api/github/create",
+        data: JSON.stringify(entity),
+        contentType: "application/json",
+        success: function(data){
+            sendChannel(data);
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+};
