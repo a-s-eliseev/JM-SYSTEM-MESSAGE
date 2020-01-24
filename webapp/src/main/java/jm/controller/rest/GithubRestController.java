@@ -5,9 +5,10 @@ import jm.GithubService;
 import jm.UserService;
 import jm.dto.ApplicationDTO;
 import jm.dto.ApplicationDTOService;
-import jm.dto.ChannelDTO;
-import jm.dto.ChannelDtoService;
+import jm.github.GitMethodsService;
 import jm.model.*;
+import jm.model.Application;
+import jm.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
-import java.security.NoSuchAlgorithmException;
+import java.io.IOException;
 import java.security.Principal;
 
 @RestController
@@ -33,12 +34,19 @@ public class GithubRestController {
 
     private ApplicationDTOService applicationDTOService;
 
+    private GitMethodsService gitMethodsService;
+
     private static final Logger logger = LoggerFactory.getLogger(
             GithubRestController.class);
 
     @Autowired
     public void  setApplicationDTOService(ApplicationDTOService applicationDTOService) {
         this.applicationDTOService = applicationDTOService;
+    }
+
+    @Autowired
+    public void setGitMethodsService(GitMethodsService gitMethodsService) {
+        this.gitMethodsService = gitMethodsService;
     }
 
     @Autowired
@@ -78,4 +86,15 @@ public class GithubRestController {
         return new ResponseEntity<>(application, HttpStatus.OK);
     }
 
+    @PostMapping("/repositories")
+    public ResponseEntity getRepositories() throws IOException {
+        String result = gitMethodsService.getRepositories();
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/commits")
+    public ResponseEntity getCommits(){
+        String result = gitMethodsService.getCommits();
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
 }

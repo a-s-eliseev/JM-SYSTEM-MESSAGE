@@ -46,8 +46,6 @@ public class CreateWorkspaceRestController {
 
     private Set<User> users = new HashSet<>();
 
-    AuthenticationManager authenticationManager;
-
    private UserDetailsServiceImpl userDetailsService;
 
 

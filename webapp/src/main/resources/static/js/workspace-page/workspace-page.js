@@ -310,6 +310,14 @@ function Createapp(entity) {
     });
 };
 
+export async function GetRepositories() {
+    const response = await fetch(`http://localhost:8080/api/github/repositories`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify()
+    });
+}
+
 function addAppIntoSidebarAppList(data) {
     $('.p-channel_sidebar__add_app').append(`
             <div class="p-app_sidebar__channel">

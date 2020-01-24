@@ -60,7 +60,11 @@ $('#form_message').submit(function () {
         const conversation = value[2];
 
         const message_input_element = document.getElementById("form_message_input");
-        const text_message = message_input_element.value;
+        let text_message = message_input_element.value;
+            const repository = "/repository";
+            if (text_message == repository) {
+                GetRepositories().then(reposiotories => {text_message = reposiotories; })
+            }
         message_input_element.value = null;
         const currentDate = convert_date_to_format_Json(new Date());
 

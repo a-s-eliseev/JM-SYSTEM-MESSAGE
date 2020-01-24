@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebAppConfiguration
 @RunWith(SpringRunner.class)
-public class WorkspaceRestControllerTest {
+public class  WorkspaceRestControllerTest {
 
     private static final String URL = "/rest/api/workspaces/";
 
