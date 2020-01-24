@@ -1,6 +1,7 @@
 package jm.controller.rest;
 
 
+import jm.GitMethodsService;
 import jm.GithubService;
 import jm.UserService;
 import jm.dto.ApplicationDTO;
@@ -87,14 +88,16 @@ public class GithubRestController {
     }
 
     @PostMapping("/repositories")
-    public ResponseEntity getRepositories() throws IOException {
-        String result = gitMethodsService.getRepositories();
+    public ResponseEntity getRepositories(HttpServletRequest request) throws IOException {
+        GitHubUsers githubToken = (GitHubUsers) request.getSession().getAttribute("token");
+        String result = gitMethodsService.getRepositories(githubToken.getLogin(), githubToken.getPassword());
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @PostMapping("/commits")
-    public ResponseEntity getCommits(){
-        String result = gitMethodsService.getCommits();
+    public ResponseEntity getCommits(@RequestBody String repository, HttpServletRequest request){
+        GitHubUsers githubToken = (GitHubUsers) request.getSession().getAttribute("token");
+        String result = gitMethodsService.getCommits(githubToken.getLogin(), repository);
         return new ResponseEntity(result, HttpStatus.OK);
     }
 }

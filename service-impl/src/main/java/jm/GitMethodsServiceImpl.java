@@ -1,6 +1,5 @@
 package jm;
 
-import jm.GitMethodsService;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.egit.github.core.*;
 import org.eclipse.egit.github.core.client.GitHubClient;
@@ -19,14 +18,13 @@ public class GitMethodsServiceImpl implements GitMethodsService {
     final String format = "{0}) {1}- created on {2}";
     int count = 1;
     final int size = 25;
-    final RepositoryId repository = new RepositoryId("NikitaNesterenko", "JM-SYSTEM-MESSAGE");
     final String message = "   {0} by {1} on {2}";
     int pages = 1;
 
     @Override
-    public String getRepositories() throws IOException {
+    public String getRepositories(String login, String password) throws IOException {
         GitHubClient client = new GitHubClient();
-        client.setCredentials("dane.witcher@yandex.ru", "Gamdalf1988");
+        client.setCredentials(login, password);
         RepositoryService repoService = new RepositoryService(client);
         CommitService commitService = new CommitService(client);
         List<Repository> repos = repoService.getRepositories();
@@ -38,11 +36,10 @@ public class GitMethodsServiceImpl implements GitMethodsService {
 
     }
     @Override
-    public String getCommits() {
+    public String getCommits(String login, String repository) {
         final CommitService service = new CommitService();
-        final RepositoryId repo = new RepositoryId("NikitaNesterenko", "JM-SYSTEM-MESSAGE");
-
-
+        final RepositoryId repo = new RepositoryId(login, repository);
+        String result = "";
         for (Collection<RepositoryCommit> commits : service.pageCommits(repo,
                 size)) {
             System.out.println("Commit Page " + pages++);
@@ -50,16 +47,17 @@ public class GitMethodsServiceImpl implements GitMethodsService {
                 String sha = commit.getSha().substring(0, 7);
                 String author = commit.getCommit().getAuthor().getName();
                 Date date = commit.getCommit().getAuthor().getDate();
-                System.out.println(MessageFormat.format(message, sha, author,
-                        date));
+                String comm = MessageFormat.format(message, sha, author, date);
+                System.out.println(comm);
+                StringBuffer sb = new StringBuffer(result);
+                result = sb.toString();
+
+
             }
+
         }
-        String result = "";
+
         return result;
     }
-
-
-
-
 }
 
